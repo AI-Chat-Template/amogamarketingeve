@@ -1,6 +1,6 @@
 # Setup and Deployment
 
-This guide covers the database-free starter, local development, the production persistence upgrade, Sign in with Vercel, and the optional Slack channel.
+This guide covers the database-free starter, local development, the production persistence upgrade, Sign in with Vercel, the optional Slack channel, and the marketing integrations available in the same chat.
 
 ## Prerequisites
 
@@ -256,6 +256,35 @@ vercel env pull .env.local --yes
 For local development, the channel falls back to `slack/eve-chat-template`, so a local connector created with the name above works without editing files under `agent/`.
 
 See [Deploy Button integrations](https://vercel.com/docs/integrations/deploy-button/integrations) for how storage products are declared in the deploy URL.
+
+## Optional Marketing Integrations
+
+The marketing specialists are part of the existing eve agent and use the same web chat, Slack
+channel, authentication, and chat sessions. No additional app, route, or chat selector is needed.
+
+The specialists can use Notion, Resend, Typefully, and Vercel Blob:
+
+- Create Vercel Connect connectors for Notion and Resend, attach them to this Vercel project, and
+  set `NOTION_CONNECTOR` and `RESEND_CONNECTOR` to their connector UIDs. The default UIDs are
+  `notion/marketing-team` and `resend/marketing-team`.
+- Keep the existing `SLACK_CONNECTOR`; marketing analytics can use the same connector as the
+  existing inbound Slack channel.
+- Add `TYPEFULLY_API_KEY` to local `.env.local` and the Vercel project environment. It is a static
+  API key used by the social media specialist.
+- Add a Vercel Blob store to this project. The store provides `BLOB_READ_WRITE_TOKEN`, which the
+  specialists use for shared brand context, per-user preferences, and handoff artifacts.
+
+For local development, link the project and pull its environment variables with `vercel link` and
+`vercel env pull .env.local`. User-scoped Notion and Resend access also requires each user to
+complete the Vercel Connect authorization flow before that specialist can call those services.
+
+Email sending, publishing or scheduling social posts, destructive actions, and selected Notion
+changes pause for approval. Drafting and analysis do not require approval. Configure and verify the
+Resend sending domain before sending a campaign.
+
+The source marketing tools store these documents as publicly accessible Blob objects. Keep secrets,
+private customer data, and other sensitive information out of brand context, preferences, and
+handoff artifacts.
 
 ## Deploy
 
