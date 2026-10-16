@@ -134,14 +134,18 @@ pnpm dev
 - Saved eve session cursors and event snapshots in either storage mode
 - Sidebar history with delete and new-chat actions
 - Vercel Connect-backed Slack channel route at `/eve/v1/slack`
+- Five marketing specialists available through the same chat and durable sessions
+- Optional Notion, Resend, Typefully, and Vercel Blob integrations for marketing work
 - First-message chat titles derived locally from the user's prompt
 - Streamdown markdown rendering for assistant text and reasoning
 - shadcn/Tailwind components for messages, tools, HITL prompts, and composer
 
-This template intentionally does not include file uploads, Vercel Blob, guest mode, NextAuth/Auth.js, or AI Elements.
+This template does not include guest mode, NextAuth/Auth.js, or AI Elements. Vercel Blob is optional and is used by the marketing specialists for shared brand context, user preferences, and handoff files.
 
 ## Agent Code
 
-Edit the agent in `agent/agent.ts`. Its behavior is defined in `agent/instructions.md`, and tools live in `agent/tools/`.
+Edit the root agent in `agent/agent.ts`. Its behavior is defined in `agent/instructions.md`, tools live in `agent/tools/`, and the marketing specialists live under `agent/subagents/`. They run inside the existing app and chat; there is no separate marketing app or chat session system.
 
 The browser talks to eve with `useEveAgent()` from `eve/react`; the app stores eve stream events and session state so `/chat/[id]` can resume the same durable conversation after refresh.
+
+# amogamarketingeve
